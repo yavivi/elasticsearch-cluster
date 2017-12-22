@@ -59,3 +59,15 @@ Other available actions: start/stop/status etc.
 
 **Note:** Kibana Service is installed only on **node-1**
 
+## Locations
+**Elasticsearch:**
+
+Installation Dir:   /usr/share/elasticsearch
+
+Configuration Dir: /etc/elasticsearch
+
+Logs Dir:          /var/logs/elasticsearch
+
+
+
+
