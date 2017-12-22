@@ -22,8 +22,25 @@ Start the cluster:
 ```shell
 vagrant up
 ```
+## Kibana
 Kibana Can be reached in the following URL:
+
 http://localhost:5601
+
+In the main screen you can switch to "Dev Tools" tab and execute an Elasticsearch Query or API.
+For example, the following command shall display the nodes status in the cluster:
+
+```http
+GET _cat/nodes?v
+```
+
+```
+ip           heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+192.168.10.3           12          97   0    0.00    0.10     0.07 mdi       -      node-2
+192.168.10.4           14          96  38    0.44    0.28     0.12 mdi       -      node-3
+192.168.10.2           13          95   1    0.08    0.06     0.07 mdi       *      node-1
+```
+
 
 ## SSH-ing to the machine
 Nodes are created with the names node-1, node-2, etc. 
