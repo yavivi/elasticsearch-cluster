@@ -3,14 +3,7 @@
 ###########################
 # GENERIC VARS
 ###########################
-RUNNING_USER=`whoami`
-INSTALL_USER="root"
-TARGET_USER="ubuntu"
-TARGET_USER_HOME=/home/$TARGET_USER
-INSTALL_HOME=/opt
-KITS_HOME=/vagrant/install/kits
 CONFIG_HOME=/vagrant/install/config
-BASHRC=$TARGET_USER_HOME/.bashrc
 
 NODE=$1
 echo "Installing Node: " $NODE
@@ -22,19 +15,10 @@ export ES_HOME=/usr/share/elasticsearch
 export ES_CONF_HOME=/etc/elasticsearch
 export KIBANA_CONF_HOME=/etc/kibana
 
-function checkPrereqForInstallation {
-  echo running user: $RUNNING_USER
-  echo allowed user: $INSTALL_USER
-  if [ $RUNNING_USER = $INSTALL_USER ]; then
-    echo "user allowed for installation"
-    return 0
-  else
-    echo "user NOT allowed for installation"
-    return 1
-  fi
-}
-
 function installJava {
+  echo "############################"
+  echo "# JAVA Installation"
+  echo "############################"
   add-apt-repository -y ppa:webupd8team/java
   apt-get -qq update
   echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
@@ -43,6 +27,9 @@ function installJava {
 }
 
 function installElasticsearch {
+  echo "############################"
+  echo "# Elasticsearch Installation"
+  echo "############################"
   wget --quiet -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
   apt-get -qq install apt-transport-https
   echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
@@ -61,6 +48,10 @@ function installElasticsearch {
 
 function installKibana {
   if [ "$NODE" = "node-1" ]; then
+    echo "############################"
+    echo "# Kibana Installation"
+    echo "############################"
+
     apt-get -qq install kibana
     /bin/systemctl daemon-reload
     /bin/systemctl enable kibana.service
@@ -78,19 +69,10 @@ echo "###############################"
 # Each line that was already performed will not be executed again #
 ###################################################################
 
-echo "############################"
-echo "# JAVA Installation"
-echo "############################"
 installJava
 
-echo "############################"
-echo "# Elasticsearch Installation"
-echo "############################"
 installElasticsearch
 
-echo "############################"
-echo "# Kibana Installation"
-echo "############################"
 installKibana
 
 echo "Installation Finished Succefully"
