@@ -7,12 +7,16 @@ Allows you to standup an Elasticsearch cluster and Kibana on your local machine.
 The following should be installed on your machine:
 1. [VirtualBox](https://www.virtualbox.org)
 2. [Vagrant](https://www.vagrantup.com)
+3. [Git](https://git-scm.com/download)
+
+If you are using Windows 7 you might encounter issues standing up the VMs if you have an old PowerShell Version. (2009)
+It will be a good idea to upgrade it (by upgrading WMF) [here](https://docs.microsoft.com/en-us/powershell/wmf/5.1/install-configure)
 
 ## Starting the Cluster
 Optionally, set the desired number of nodes in the cluster (default=1 if not set). For example for a cluster of size 3:
 ```shell
-export ES_NUM_NODES=3   (Linux)
-set ES_NUM_NODES=3      (Windows)
+export ES_NUM_NODES=3   (Linux or Linux Like Shell e.g. cygwin or Git Bash)
+set ES_NUM_NODES=3      (Windows CMD)
 ```
 Change directory to the cloned repository:
 ```shell
