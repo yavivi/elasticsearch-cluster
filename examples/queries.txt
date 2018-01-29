@@ -1,0 +1,528 @@
+##############################################
+# GET Elasticsearch Installation Information #
+##############################################
+GET /
+
+
+
+##############################################
+# GET Elasticsearch Health Check Information #
+##############################################
+GET _cluster/health
+
+
+#####################################################
+# PUT a document into Elasticsearch under ID=123456
+#####################################################
+PUT /att/employee/123456
+{
+  "name"  : "John Doe",
+  "email" : "jd5614@att.com",
+  "join_date" : "2008/07/01",
+  "age" : 33,
+  "Hardware" : [ "Dell PC", "Dell Screen", "Keyboard", "Mouse" ]
+}
+
+
+
+#####################################################
+# GET a specific document placed under ID=123456
+#####################################################
+GET /att/employee/123456
+
+
+
+###########################################################
+# POST a document into Elasticsearch. ID is auto-generated
+###########################################################
+POST /att/employee
+{
+  "name"  : "Jane Doe",
+  "email" : "jd2233@att.com",
+  "join_date" : "2010/09/01",
+  "age" : 29,
+  "Hardware" : [ "Macbook Pro" ]
+}
+
+# 14-15m
+
+#####################################################
+# UPDATE a document
+#####################################################
+PUT /att/employee/123456
+{
+  "name"  : "John Doe",
+  "email" : "jd5614@att.com",
+  "join_date" : "2008/07/01",
+  "age" : 33,
+  "Hardware" : [ "Dell PC", "Dell Screen", "Keyboard", "Mouse", "Speakers"]
+}
+
+
+
+#####################################################
+# DELETE a specific document
+#####################################################
+DELETE /att/employee/123456
+
+
+
+#####################################################
+# GET 'att' Index Mapping (Schema)
+# Possible Datatypes:
+# Text, Keyword, Integers, Floating Points, Boolean
+# Date, IP (IPv4, IPv6)
+# Geo-Points (Lat/Lon)
+# BLOB (Base64 encoded strings)
+#####################################################
+GET /att/_mapping
+
+
+
+#####################################################
+# DELETE an entire index
+#####################################################
+DELETE /att
+
+# 19-20m
+
+######################################################################
+# Define an Index Schema in advance.
+# Index=us
+# Type=presidents (ID, Name, Desc, Years, From, Political Party, Age)
+######################################################################
+PUT /us
+{
+      "mappings": {
+          "presidents" : {
+                "_all" : { "enabled": true  },
+                "properties": {
+                    "id" : { "type": "integer" },
+                    "nm" : { "type" : "text" },
+                    "desc" : { "type" : "text", "analyzer": "english"},
+                    "years" : { "type" : "byte" },
+                    "from" : { "type" : "date", "format": "year" },
+                    "pp" : { "type": "keyword" },
+                    "age" : { "type": "integer" }
+                }
+            }
+        }
+}
+
+
+######################################################################
+# Bulk Loading of all 45 Us presidents into Elasticsearch
+######################################################################
+POST /us/presidents/_bulk
+{ "index": {}}
+{"nm": "George Washington", "from": "1789", "years": 8, "pp": "None", "id": 1, "desc" : "George Washington is a well-known historical figure and was the first president of the United States of America after leading the Continental army in a victory for independence. The first President unified the new nation and shaped the chief executive\u0027s duties. He refused to run for a third term. On their wedding day, Martha Washington gave him a miniature portrait of herself. He wore it on a chain around his neck until his death 40 years later.", "age" : 57 }
+{ "index": {}}
+{"nm": "John Adams", "from": "1797", "years": 4, "pp": "Federalist", "id": 2, "desc" : "John Adams served as the vice president to George Washington before going on to become the second president of the United States of America. Later his son, John Quincy Adams was also president. Adams was the first President to live in the White House. Adams had a tough job filling Washington\u0027s shoes. His advocacy of the Alien and Sedition Acts allowed him to silence critics, but made him unpopular. He lost reelection to Thomas Jefferson.", "age" : 61 }
+{ "index": {}}
+{"nm": "Thomas Jefferson", "from": "1801", "years": 8, "pp": "Democratic-Republican", "id": 3, "desc" : "Thomas Jefferson was the third president of the United States of America and was responsible for the purchase of Louisiana. He served as president for two terms", "age" : 57 }
+{ "index": {}}
+{"nm": "James Madison", "from": "1809", "years": 8, "pp": "Democratic-Republican", "id": 4, "desc" : "James Madison was the 4th president of the United States of America. He is often touted as the father of the Constitution because of the work he did on the Constitution", "age" : 57 }
+{ "index": {}}
+{"nm": "James Monroe", "from": "1817", "years": 8, "pp": "Democratic-Republican", "id": 5, "desc" : "Monroe lived out his retirement in poverty.His term is called the \u0027Era of Good Feeling\u0027 because there was little partisan fighting. He formulated the Monroe Doctrine, which declared the Americas off-limits to European meddling.", "age" : 58}
+{ "index": {}}
+{"nm": "John Quincy Adams", "from": "1825", "years": 4, "pp": "Democratic-Republican", "id": 6, "desc" : "John Quincy Adams was the son of John Adams who served as Washington’s vice president and as President. He was the sixth president of the United States", "age" : 57 }
+{ "index": {}}
+{"nm": "Andrew Jackson", "from": "1829", "years": 8, "pp": "Democrat", "id": 7, "desc" : "He was known as Old Hickory for his strength of character. Despite modern criticisms over his handling of the North American Indians and his pro-slavery stance, he is otherwise regarded as a great defender of democracy who kept America united over as difficult period of time", "age" : 61 }
+{ "index": {}}
+{"nm": "Martin van Buren", "from": "1837", "years": 4, "pp": "Democrat", "id": 8, "desc" : "Van Buren was the first President to be born an American citizen, rather than a British subject. Van Buren\u0027s Presidency was marred by an economic depression that led to bank failures and food riots. He was easily defeated for reelection.", "age" : 54 }
+{ "index": {}}
+{"nm": "William H. Harrison", "from": "1841", "years": 0, "pp": "Whig", "id": 9, "desc" : "The first United States president to die in office. Served the shortest term of any American president: March 4 – April 4, 1841, 30 days, 12 hours, and 30 minutes", "age" : 68 }
+{ "index": {}}
+{"nm": "John Tyler", "from": "1841", "years": 4, "pp": "Whig", "id": 10, "desc" : "Tyler had 15 children, more than any President. Tyler was expected to be a passive acting President while he finished Harrison\u0027s term. But he refused to be passive. He made enemies in Congress and was the first President to be threatened with impeachment. The effort failed.", "age" : 51 }
+{ "index": {}}
+{"nm": "James K. Polk", "from": "1845", "years": 4, "pp": "Democrat", "id": 11, "desc" : "Polk is the only President to have served as Speaker of the House. Polk was the first \u0027dark horse\u0027 or little-known nominee to become President. He presided over the Mexican War, which added Texas, California, and other territory to the United States.", "age" : 49 }
+{ "index": {}}
+{"nm": "Zachary Taylor", "from": "1849", "years": 1.5, "pp": "Whig", "id": 12, "desc": "Died after he was severely ill with an unknown digestive ailment", "age" : 64 }
+{ "index": {}}
+{"nm": "Millard Fillmore", "from": "1850", "years": 3, "pp": "Whig", "id": 13, "desc" : "Fillmore approved the Compromise of 1850, allowing slavery in the South. But neither the North nor the South was happy with it, and Fillmore was blamed for the law\u0027s failure. In 1856, Fillmore ran for President on the anti-immigrant Know-Nothing Party ticket.", "age" : 50 }
+{ "index": {}}
+{"nm": "Franklin Pierce", "from": "1853", "years": 4, "pp": "Democrat", "id": 14, "desc" : "Pierce\u0027s wife hated Washington, D.C., so much, that she fainted when she found out he had been nominated for President. Pierce supported the Kansas-Nebraska Act, which gutted the Compromise of 1850.", "age" : 48 }
+{ "index": {}}
+{"nm": "James Buchanan", "from": "1857", "years": 4, "pp": "Democrat", "id": 15, "desc" : "Buchanan was the only bachelor to ever serve in the White House. Buchanan tried in vain to find a compromise to keep the South from seceding from the Union, but failed.", "age" : 65 }
+{ "index": {}}
+{"nm": "Abraham Lincoln", "from": "1861", "years": 4, "pp": "Republican", "id": 16, "desc" : "Abraham Lincoln led the nation through the civil war. A notable statesman and orator, he is one of the most popular presidents in history. He was assassinated by John WIlkes Boothe", "age" : 52 }
+{ "index": {}}
+{"nm": "Andrew Johnson", "from": "1865", "years": 4, "pp": "National Union", "id": 17, "desc" : "Andrew Johnson was the 17th president of the United States of America and born in 1808. He took over the presidency after Lincoln was shot and killed.", "age" : 56 }
+{ "index": {}}
+{"nm": "Ulysses S. Grant", "from": "1869", "years": 8, "pp": "Republican", "id": 18, "desc" : "Grant was born Hiram Ulysses Grant, but an error on his application to West Point changed his name to Ulysses Simpson Grant. He liked the initials so much that he kept the name. Grant was the top Union military hero of the Civil War. His two terms were marred by scandals.", "age" : 46 }
+{ "index": {}}
+{"nm": "Rutherford Hayes", "from": "1877", "years": 4, "pp": "Republican", "id": 19, "desc" : "Hayes is one of only three Presidents to lose the popular vote but win the office. He won the election by one electoral vote. Hayes\u0027s wife, Lucy, was the first First Lady to graduate from college.", "age" : 54 }
+{ "index": {}}
+{"nm": "James Garfield", "from": "1881", "years": 0, "pp": "Republican", "id": 20, "desc": "Garfield presidency lasted just 200 days—from March 4, 1881, until his death on September 19, 1881, as a result of being shot by assassin Charles J. Guiteau", "age" : 49 }
+{ "index": {}}
+{"nm": "Chester Arthur", "from": "1881", "years": 4, "pp": "Republican", "id": 21, "desc" : "Arthur was unknown before being elected, but surprised people by being honest and responsible. He helped create the Civil Service. As a lawyer, Arthur defended a black woman who had been abused on a streetcar. He won the case, which led the streetcar companies to integrate.", "age" : 51 }
+{ "index": {}}
+{"nm": "Grover Cleveland", "from": "1885", "years": 4, "pp": "Democrat", "id": 22, "desc" : "Cleveland is the only President to be elected to two non-consecutive 4 year terms (first began at 1885 and the second at 1893). Cleveland expanded the Civil Service and ended wasteful government programs. But an economic depression wrecked his second term.", "age" : 47 }
+{ "index": {}}
+{"nm": "Benjamin Harrison", "from": "1889", "years": 4, "pp": "Republican", "id": 23, "desc" : "Harrison was caught between reformers who were fighting the spoils system and those who wanted to continue it, and was defeated after one term. Harrison\u0027s grandfather was President William Henry Harrison.", "age" : 55 }
+{ "index": {}}
+{"nm": "Grover Cleveland", "from": "1893", "years": 4, "pp": "Democrat", "id": 24, "desc" : "Cleveland expanded the Civil Service and ended wasteful government programs. But an economic depression wrecked his second term. Cleveland is the only President to be elected to two non-consecutive terms. Cleveland was the leader of the pro-business Bourbon Democrats who opposed high tariffs, Free Silver, inflation, imperialism, and subsidies to business, farmers, or veterans on libertarian philosophical grounds.", "age" : 55 }
+{ "index": {}}
+{"nm": "William McKinley", "from": "1897", "years": 4, "pp": "Republican", "id": 25, "desc" : "McKinley led the United States during the Spanish-American War. The United States won several important overseas colonies. Only moments after handing a girl his \u0027lucky\u0027 red carnation, McKinley was assassinated.", "age" : 54 }
+{ "index": {}}
+{"nm": "Theodore Roosevelt", "from": "1901", "years": 8, "pp": "Republican", "id": 26, "desc" : "Theodore Roosevelt was the 26th president of the United States of America. He is known for his work on the Square Deal, on Environmental projects and for leading the Progressive Movement", "age" : 42 }
+{ "index": {}}
+{"nm": "William Taft", "from": "1909", "years": 4, "pp": "Republican", "id": 27, "desc" : "Taft continued many of Roosevelt\u0027s policies. A conservative, he alienated the progressive wing of his party and lost reelection. Taft is the only President who became a Supreme Court Justice.", "age" : 51 }
+{ "index": {}}
+{"nm": "Woodrow Wilson", "from": "1913", "years": 8, "pp": "Democrat", "id": 28, "desc" : "Woodrow Wilson was a president that had a successful agenda larger than most. His years in officer were from 1913-1921 and an important part of World War I. He was a major leader at the Paris Versailles Peace Conference in 1919, where he championed the proposed League of Nations. However, he was unable to obtain Senate approval for U.S. membership. After he suffered debilitating strokes in September 1919, his wife and staff members handled most of his presidential duties.", "age" : 56 }
+{ "index": {}}
+{"nm": "Warren Harding", "from": "1921", "years": 2.5, "pp": "Republican", "id": 29, "desc" : "Harding died in office, just as massive corruption in the Teapot Dome scandal was about to become public. Harding\u0027s election was the first in which women voted.", "age" : 55 }
+{ "index": {}}
+{"nm": "Calvin Coolidge", "from": "1923", "years": 6, "pp": "Republican", "id": 30, "desc" : "Coolidge\u0027s term was marked by economic prosperity. However, he ignored signs that the stock market was likely to collapse. Coolidge was known as \u0027Silent Cal.\u0027 Once a reporter said to him, \u0027I bet my editor I could get more than two words out of you.\u0027 Coolidge replied: \u0027You lose.\u0027", "age" : 51 }
+{ "index": {}}
+{"nm": "Herbert C. Hoover", "from": "1929", "years": 4, "pp": "Republican", "id": 31, "desc" : "Herbert Hoover was the 31st president of the United States of America. Before becoming president he was head of the Food Administration. He was president during the Great Stock Market crash of 1929", "age" : 54 }
+{ "index": {}}
+{"nm": "Franklin Delano Roosevelt", "from": "1933", "years": 12, "pp": "Democrat", "id": 32, "desc" : "After graduating from Harvard, Roosevelt went on to marry Eleanor and have 6 children. He served as Secretary of the Navy and Governor of New York before becoming President of the USA", "age" : 51 }
+{ "index": {}}
+{"nm": "Harry S Truman", "from": "1945", "years": 8, "pp": "Democrat", "id": 33, "desc" : "Truman became the President of the US after Roosevelt died in office and was re-elected for a second term. He made the decision to release the atomic bomb over Japan", "age" : 60 }
+{ "index": {}}
+{"nm": "Dwight David Eisenhower", "from": "1953", "years": 8, "pp": "Republican", "id": 34, "desc" : "Eisenhower became the Chief Military in aid to General MacArthur and was elevated by Roosevelt to Supreme Allied Commander in Europe. He was successful with many strategies against Germany in WWII", "age" : 62 }
+{ "index": {}}
+{"nm": "John Fitzgerald Kennedy", "from": "1961", "years": 2.9, "pp": "Democrat", "id": 35, "desc" : "John F. Kennedy could perhaps be one of the most famous presidents the United States has had. On 11/22/1963 he was assassinated by Lee Harvey Oswald", "age" : 43 }
+{ "index": {}}
+{"nm": "Lyndon Baines Johnson", "from": "1963", "years": 5, "pp": "Democrat", "id": 36, "desc" : "started his term after JFK was assassinated in 1963. He helped with Medicare and Medicaid", "age" : 55 }
+{ "index": {}}
+{"nm": "Richard Milhous Nixon", "from": "1969", "years": 5, "pp": "Republican", "id": 37, "desc" : "Though he passed many important and necessary changes he is most known for the Watergate Scandal", "age" : 56 }
+{ "index": {}}
+{"nm": "Gerald R. Ford", "from": "1974", "years": 3, "pp": "Republican", "id": 38, "desc" : "Ford became Vice President after Nixon\u0027s Vice President resigned in disgrace, and President after Nixon resigned. His pardon of Nixon was unpopular, probably costing him reelection. Ford is the only President never elected President or Vice President.", "age" : 61 }
+{ "index": {}}
+{"nm": "Jimmy Carter", "from": "1977", "years": 4, "pp": "Democrat", "id": 39, "desc" : "Carter had success promoting Middle East peace. But soaring oil prices, high inflation, and the Iran hostage crisis made him look weak and ineffectual. Since leaving office, Carter has traveled the world doing charity work.", "age" : 52 }
+{ "index": {}}
+{"nm": "Ronald Wilson Reagan", "from": "1981", "years": 8, "pp": "Republican", "id": 40, "desc" : "Ronald Reagan was a fairly well-known actor before he ran and was elected for the President of the United States of America two terms in a row", "age" : 69 }
+{ "index": {}}
+{"nm": "George H. W. Bush", "from": "1989", "years": 4, "pp": "Republican", "id": 41, "desc" : "During his presidency the Soviet Union dissolved, Suddam Hussein invaded Kuwait and Noriega lost dictatorship of Panama", "age" : 64 }
+{ "index": {}}
+{"nm": "Bill Clinton", "from": "1993", "years": 8, "pp": "Democrat", "id": 42, "desc" : "served two terms. His wife, Hilary Clinton also serves as very important political figure. Clinton achieved goals such as passage of the NAFTA trade agreement and cuts in the budget deficit. But his popularity was uneven and his second term was marred by scandal. When he was 16, Clinton met President Kennedy at the White House. The experience inspired his interest in politics.", "age" : 46 }
+{ "index": {}}
+{"nm": "George W. Bush", "from": "2001", "years": 8, "pp": "Republican", "id": 43, "desc" : "Just eight months after being sworn in, President Bush had to unite a mournful country after the September 11th terrorist attacks. A self-proclaimed wartime commander-in-chief, President Bush, like his father, led the United States into war against Iraq. Before focusing on national politics, George Bush was the managing partner and part owner of the Texas Rangers baseball team from 1989–1998.", "age" : 54 }
+{ "index": {}}
+{"nm": "Barack Obama", "from": "2009", "years": 8, "pp": "Democrat", "id": 44, "desc" : "Barack Obama gained national recognition after he delivered the keynote address at the Democratic National Convention in 2004. He served as the U.S. Senator for Illinois from 2005 to 2008. Barack Obama is the first African American president of the United States.", "age" : 47 }
+{ "index": {}}
+{"nm": "Donald J. Trump", "from": "2017", "years": 4, "pp": "Republican", "id": 45, "desc" : "Donald John Trump (born June 14, 1946) is the 45th and current President of the United States, in office since January 20, 2017. Before entering politics, he was a businessman and television personality." , "age" : 70 }
+
+
+
+###################################################################
+# Count how Documents exist under Index/Type /us (=45)
+###################################################################
+GET /us/_count
+
+
+
+###################################################################
+# Quick Search by keywords (civil OR war)
+# Notice the Scoring that is affected by:
+# Term Frequency in Document, 
+# Length of Fields, 
+# Term Freuqency in all Docs in the Index
+#
+# !!Note!! We didnt specify in which field to search.
+# In that case, search defaults to a special hidden field called _all
+# that contains the entire document.
+###################################################################
+GET /us/presidents/_search?q=civil war
+GET /us/presidents/_search?q=desc:civil war
+
+###############################################
+# A Fuzzy search example
+# Looks for terms similar (by distance) to the term provided 
+# depends on its length:
+# 0..2 - must match exactly
+# 3..5 - one edit allowed
+# >5   - two edits allowed
+###############################################
+# one edit - returns (4 hits)
+GET /us/presidents/_search?q=rosevelt~
+
+# two edits - still returns 4 hits
+GET /us/presidents/_search?q=rozevelt~
+
+# 3 edits - returns none
+GET /us/presidents/_search?q=ruzevelt~
+
+
+
+###############################################
+# Text analysis example
+###############################################
+GET /us/_mapping
+
+
+# Standard Analyzer (Default) - LCase + Punctutation Removal
+GET _analyze
+{
+  "text": "Is it going to rain tomorrow?"
+}
+
+# English Analyzer - LCase + Punctutation Removal + Stop Words + RootForm
+GET _analyze
+{
+  "text": "Is it going to rain tomorrow?",
+  "analyzer": "english"
+}
+
+GET _analyze
+{
+  "text": "Here comes the rain...",
+  "analyzer": "english"
+}
+
+########################################
+# Inverted Index Example:
+#
+# |------------------------------------
+# | Term     | Doc1   |  Doc2
+# |------------------------------------
+# | go       |  V     |  
+# | rain     |  V     |  V
+# | tomorrow |  V     |  
+# | here     |        |  V
+# | come     |        |  V
+########################################
+# Searching with the terms: "rain tomorrow"
+# will obviously rank Doc1 higher than Doc2
+########################################
+
+
+##################################
+# Query DSL
+##################################
+
+############################################################################
+# Search for all presidents that contain "john" in their name (nm field)
+############################################################################
+GET /us/presidents/_search
+{
+  "query": {
+    "match": {
+      "nm": "john"
+    }
+  }
+}
+
+############################################################################
+# Search for the exact phrase "atomic bomb" in the description field (desc)
+############################################################################
+GET /us/presidents/_search
+{
+  "query": {
+    "match_phrase": {
+      "desc": "civil war"
+    }
+  }
+}
+
+
+
+##################################################################
+# Search an exact term: All Democrat presidents
+##################################################################
+GET /us/presidents/_search
+{
+  "query": {
+    "term": {
+      "pp": "Democrat"
+    }
+  } 
+}
+
+
+
+#####################################################################
+# Query String Query - Get all non republican/democrat presidents
+#####################################################################
+GET /us/presidents/_search
+{
+  "query": {
+    "query_string": {
+      "default_field": "pp",
+      "query": "NOT Republican AND NOT Democrat"
+    }
+  },
+  "size": 45
+}
+
+
+
+##################################
+# Same - Fields specified inline
+##################################
+GET /us/presidents/_search
+{
+  "query": {
+    "query_string": {
+      "query": "NOT pp:Republican AND NOT pp:Democrat"
+    }
+  },
+  "size": 45
+}
+
+
+
+#####################################################################
+# Get all presidents that began their presidency at their 40s, sorted
+# ascending by their age
+#####################################################################
+GET /us/presidents/_search
+{
+  "query": {
+    "range": {
+      "age": {
+        "gte": 40,
+        "lt": 50
+      }
+    }
+  },
+  "sort": {
+    "age": {
+      "order": "asc"
+    }
+  }
+}
+
+
+#################################
+# Analytics - Aggregations      #
+#################################
+
+
+####################################################################
+# Aggregate Presidents by their Political Party
+#####################################################################
+GET /us/_search?size=0
+{
+  "aggs": {
+    "PresidentsByPoliticalParty": {
+      "terms": {
+        "field": "pp"
+      }
+    }
+  }
+}
+
+####################################################################
+# Add a Metric to each Bucket - Average Age of Presidents
+#####################################################################
+GET /us/_search?size=0
+{
+  "aggs": {
+    "PresidentsByPoliticalParty": {
+      "terms": {
+        "field": "pp"
+      },
+      "aggs": {
+        "AvgAge": {
+          "avg": {
+            "field": "age"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+####################################################################
+# Show extended statistics on the provided field 
+####################################################################
+GET /us/_search?size=0
+{
+  "aggs": {
+    "PresidentsByPoliticalParty": {
+      "terms": {
+        "field": "pp",
+        "size": 10
+      },
+      "aggs": {
+        "AgeStat": {
+          "extended_stats": {
+            "field": "age"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+#######################
+# Nested Stats
+#######################
+GET /us/_search?size=0
+{
+  "aggs": {
+    "PresidentsByPoliticalParty": {
+      "terms": {
+        "field": "pp",
+        "size": 10
+      },
+      "aggs": {
+        "YearsServed": {
+          "terms": {
+            "field": "years"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+##########################
+# Histogram
+##########################
+GET /us/_search?size=0
+{
+  "aggs": {
+    "YearsServedHistogram": {
+      "histogram": {
+        "field": "years",
+        "interval": 1
+      }
+    }
+  }
+}
+
+
+#################################
+# The Cluster
+#################################
+
+
+############
+# Health
+############
+GET _cluster/health
+
+############
+# Nodes
+############
+GET _cat/nodes?v
+
+############
+# Shards
+############
+GET _cat/shards?v
+
+###########
+# Indices #
+###########
+GET _cat/indices
+
+
+PUT /us/_settings
+{
+    "index" : {
+        "number_of_replicas" : 2
+    }
+}
+
+
