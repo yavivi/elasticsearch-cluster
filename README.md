@@ -44,7 +44,7 @@ ip           heap.percent ram.percent cpu load_1m load_5m load_15m node.role mas
 192.168.10.4           14          96  38    0.44    0.28     0.12 mdi       -      node-3
 192.168.10.2           13          95   1    0.08    0.06     0.07 mdi       *      node-1
 ```
-
+You can practice the queries from the [examples](examples/queries.txt) file by pasting it into the dev tool.
 
 ## SSH-ing to the machine
 Nodes are created with the names node-1, node-2, etc. 
