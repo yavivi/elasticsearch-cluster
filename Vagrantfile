@@ -33,7 +33,8 @@ Vagrant.configure("2") do |config|
         ki_port = 5601 + (i-1)
 
         config.vm.define node_name do |node|
-            node.vm.box = "ubuntu/xenial64"
+            #node.vm.box = "ubuntu/xenial64"
+            node.vm.box = "centos/7"
             node.vm.provision :shell, inline: "sed 's/127\.0\.0\.1.*#{node_name}.*/#{node_ip} #{node_name}/' -i /etc/hosts"
             #node.vm.provision :shell, inline: "echo '#{node_ip} #{node_name}' >> /etc/hosts"
             
