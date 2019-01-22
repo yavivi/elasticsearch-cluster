@@ -1,32 +1,30 @@
-=================
-Cluster Exercise:
-=================
+# Cluster Exercise:
+
 In this exercise you will form a cluster of at least 3 nodes with your peer students.
 Every student will be responsible to configure his own node correctly so that when starting them all up they will join 
 together and form a single cluster.
 After the cluster is formed we will exercise some of the things we've learned in the distributed cluster chapter.
 
 
-=======================================================================================
-Cluster Preperations:
-=======================================================================================
+## Cluster Cleanup & Preperations:
 
-Clear all Existing ES Data:
----------------------------
+
 1. Clear all data from the elasticsearch server:
 
    Reminder: Clear data by: curl -XDELETE localhost:9200/_all
 
 2. Stop ES Node
 
-=======================================================================================
-Node Configuration:
-========================================================================================
+
+## Node Configuration:
+
+
 Open elasticsearch.yml (located under {ES_HOME}/config) and set the following parameters:
 
 
-General:
---------
+## General:
+
+
 1. Set cluster name to have a unique value. For example:
     
     cluster.name: my-app-cluster
@@ -38,8 +36,9 @@ General:
     node.name: node-1
 
 
-Network & Discovery:
---------------------
+## Network & Discovery:
+
+
 3. Set network.host parameter with your machine's IP or hostname. For example:
 
     network.host: 172.24.250.15
@@ -52,8 +51,9 @@ Network & Discovery:
     Please add at least 2 member addresses in the list.
 
 
-Single Node Start:
-------------------
+## Single Node Start:
+
+
 5. With coordination of your team members, start only one node in the cluster.
    Run Cluster Health on the only node (GET _cluster/health?pretty).
    Cluster should be "green" and status should indicate only one node:
@@ -81,8 +81,9 @@ Make sure you have no documents at the beginning:
 }
 
 
-Load Data:
-----------
+## Load Data:
+
+
 7. Load some data into ES (e.g. create a document or upload the bulk presidents index).
 
 8. Run again the Cluster Health Check. Notice that status changed into "yellow".
@@ -92,8 +93,10 @@ Load Data:
 
    Make sure you understand the numbers.
 
-Join another Node to the cluster
----------------------------------
+
+## Join another Node to the cluster
+
+
 9. Start another node on another host, make sure:
    1. They define the same cluster name
    2. They both define the same discovery hosts list
@@ -106,8 +109,9 @@ Join another Node to the cluster
 11. By looking at the logs, try to determine who is the master ?
    (master can be also determined by running: curl node1:9200/_cat/master)
 
-Change Number of Replicas
-------------------------
+## Change Number of Replicas
+
+
 12. Change the number of replicas of the index (from the default value 1 to 2):
 curl -XPUT 'node-ip:9200/us/_settings' -d '
 {
@@ -120,8 +124,9 @@ Did the cluster state changed ? Why ?
 
 13. Start another node in the cluster and make sure we are back to "green" status.
 
-Try Failover:
--------------
+## Try Failover:
+
+
 14. Stop the first node.
 
    Notice that status changed to "yellow".
@@ -130,8 +135,8 @@ Try Failover:
 Make sure you that you can still access all your data even though the first node is down.
 
 
-Try the following queries:
--------------------------
+## Try the following queries:
+
 GET _cat/shards
 GET _cat/nodes?v
 
